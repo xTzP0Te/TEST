@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Your Tasks</h2>
+  <a href="{{ url_for('tasks.new_task') }}" class="btn btn-success mb-3">New Task</a>
+  {% if tasks %}
+    <table class="table">
+      <thead><tr><th>Title</th><th>Date</th><th>Completed</th><th>Action</th></tr></thead>
+      <tbody>
+        {% for task in tasks %}
+        <tr>
+          <td><a href="{{ url_for('tasks.task_detail', id=task.id) }}">{{ task.title }}</a></td>
+          <td>{{ task.timestamp.strftime('%Y-%m-%d') }}</td>
+          <td>{{ 'Yes' if task.completed else 'No' }}</td>
+          <td>
+            <form method="post" action="{{ url_for('tasks.delete_task', id=task.id) }}" style="display:inline">
+              {{ delete_form.hidden_tag() }}
+              <button class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No tasks yet. <a href="{{ url_for('tasks.new_task') }}">Create one</a>!</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои проекты{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>Мои проекты</h1>
+        <a href="{{ url_for('projects.create_project') }}" class="btn btn-primary mb-3">Создать новый проект</a>
+        
+        {% if projects %}
+            <div class="list-group">
+                {% for project in projects %}
+                    <a href="{{ url_for('projects.project_detail', project_id=project.id) }}" class="list-group-item list-group-item-action">
+                        <h5 class="mb-1">{{ project.name }}</h5>
+                        <p class="mb-1">{{ project.description }}</p>
+                        <small>Создан: {{ project.created_at }}</small>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>У вас нет проектов. Создайте новый проект.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Проект: {{ project.name }}{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>{{ project.name }}</h1>
+        <p>{{ project.description }}</p>
+        <p>Дата создания: {{ project.created_at }}</p>
+
+        <h3>Задачи проекта:</h3>
+        {% if project.tasks %}
+            <ul>
+                {% for task in project.tasks %}
+                    <li>{{ task.title }} - {{ task.status }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Нет задач в этом проекте.</p>
+        {% endif %}
+
+        <h3>Участники проекта:</h3>
+        {% if project.members %}
+            <ul>
+                {% for member in project.members %}
+                    <li>{{ member.user.username }} ({{ member.role }})</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Нет участников в этом проекте.</p>
+        {% endif %}
+
+        <a href="{{ url_for('projects.edit_project', project_id=project.id) }}" class="btn btn-warning">Редактировать проект</a>
+    </div>
+{% endblock %}

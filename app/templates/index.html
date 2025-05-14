@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="jumbotron text-center">
+    <h1>Welcome to Task Manager!</h1>
+    <p><a href="{{ url_for('auth.login') }}" class="btn btn-primary">Login</a>
+       <a href="{{ url_for('auth.register') }}" class="btn btn-secondary">Register</a></p>
+  </div>
+{% endblock %}
