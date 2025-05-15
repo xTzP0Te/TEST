@@ -95,6 +95,18 @@ def delete_task(id):
     flash('Task deleted')
     return redirect(url_for('tasks.dashboard'))
 
+@bp.route('/task/<int:id>/complete', methods=['POST'])
+@login_required
+def complete_task(id):
+    task = Task.query.get_or_404(id)
+    if task.owner != current_user:
+        flash('Access denied.')
+        return redirect(url_for('tasks.dashboard'))
+    task.completed = True
+    db.session.commit()
+    flash('Task marked as completed!')
+    return redirect(url_for('tasks.dashboard'))
+
 @bp.route('/uploads/<filename>')
 @login_required
 def uploaded_file(filename):

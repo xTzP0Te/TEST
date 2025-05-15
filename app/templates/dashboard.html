@@ -2,8 +2,7 @@
 {% block content %}
   <h2>Your Tasks</h2>
   <a href="{{ url_for('tasks.new_task') }}" class="btn btn-success mb-3">New Task</a>
-
-  <a href="{{ url_for('tasks.joke') }}" class="btn btn-primary mb-3">Пошутить</a>  <!-- Вот эта строка -->
+  <a href="{{ url_for('tasks.joke') }}" class="btn btn-primary mb-3">Пошутить</a>
 
   {% if tasks %}
     <table class="table">
@@ -15,6 +14,14 @@
           <td>{{ task.timestamp.strftime('%Y-%m-%d') }}</td>
           <td>{{ 'Yes' if task.completed else 'No' }}</td>
           <td>
+            {% if not task.completed %}
+            <form method="post" action="{{ url_for('tasks.complete_task', id=task.id) }}" style="display:inline">
+              {{ delete_form.hidden_tag() }}
+              <button class="btn btn-success btn-sm">Задача выполнена</button>
+            </form>
+            {% else %}
+              <span class="text-muted">Готово</span>
+            {% endif %}
             <form method="post" action="{{ url_for('tasks.delete_task', id=task.id) }}" style="display:inline">
               {{ delete_form.hidden_tag() }}
               <button class="btn btn-danger btn-sm">Delete</button>
