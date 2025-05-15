@@ -1,8 +1,13 @@
 import logging
 from logging.config import fileConfig
+from logging.config import fileConfig
+from sqlalchemy import engine_from_config
+from sqlalchemy import pool
+from alembic import context
 
 from flask import current_app
-
+from app import create_app, db
+from app.models import User, Task
 from alembic import context
 
 # this is the Alembic Config object, which provides
@@ -14,7 +19,15 @@ config = context.config
 fileConfig(config.config_file_name)
 logger = logging.getLogger('alembic.env')
 
+app = create_app()
+with app.app_context():
+    config.set_main_option(
+        'sqlalchemy.url',
+        app.config['SQLALCHEMY_DATABASE_URI']
+    )
 
+fileConfig(config.config_file_name)
+target_metadata = db.metadata
 def get_engine():
     try:
         # this works with Flask-SQLAlchemy<3 and Alchemical
@@ -105,6 +118,8 @@ def run_migrations_online():
 
         with context.begin_transaction():
             context.run_migrations()
+
+
 
 
 if context.is_offline_mode():
