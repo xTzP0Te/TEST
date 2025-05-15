@@ -20,13 +20,11 @@ def create_app():
     migrate.init_app(app, db)
     login_manager.init_app(app)
 
-    # blueprints
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
     from app.tasks import bp as tasks_bp
     app.register_blueprint(tasks_bp)
 
-    # ensure upload folder exists
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
     @app.route('/')
