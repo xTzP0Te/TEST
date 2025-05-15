@@ -4,6 +4,12 @@
   <a href="{{ url_for('tasks.new_task') }}" class="btn btn-success mb-3">New Task</a>
   <a href="{{ url_for('tasks.joke') }}" class="btn btn-primary mb-3">Пошутить</a>
 
+  <div class="mb-3">
+    <a href="{{ url_for('tasks.dashboard') }}" class="btn btn-outline-secondary">Все</a>
+    <a href="{{ url_for('tasks.dashboard', status='completed') }}" class="btn btn-outline-success">Выполненные</a>
+    <a href="{{ url_for('tasks.dashboard', status='incomplete') }}" class="btn btn-outline-warning">Невыполненные</a>
+  </div>
+
   {% if tasks %}
     <table class="table">
       <thead><tr><th>Title</th><th>Date</th><th>Completed</th><th>Action</th></tr></thead>

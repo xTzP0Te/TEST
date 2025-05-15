@@ -29,8 +29,16 @@ def joke():
 @bp.route('/dashboard')
 @login_required
 def dashboard():
-    tasks = Task.query.filter_by(owner=current_user).order_by(Task.timestamp.desc()).all()
+    status = request.args.get('status')
     delete_form = EmptyForm()
+    query = Task.query.filter_by(owner=current_user)
+
+    if status == 'completed':
+        query = query.filter_by(completed=True)
+    elif status == 'incomplete':
+        query = query.filter_by(completed=False)
+
+    tasks = query.order_by(Task.timestamp.desc()).all()
     return render_template('dashboard.html', tasks=tasks, delete_form=delete_form)
 
 @bp.route('/task/new', methods=['GET','POST'])
@@ -106,6 +114,9 @@ def complete_task(id):
     db.session.commit()
     flash('Task marked as completed!')
     return redirect(url_for('tasks.dashboard'))
+
+
+
 
 @bp.route('/uploads/<filename>')
 @login_required
