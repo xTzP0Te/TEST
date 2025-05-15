@@ -5,11 +5,26 @@ from werkzeug.utils import secure_filename
 from app import db
 from app.models import Task
 from app.forms import TaskForm, EmptyForm
+import requests
 
 bp = Blueprint('tasks', __name__)
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png','jpg','jpeg','gif','pdf','txt','doc','docx'}
+
+
+@bp.route('/joke')
+def joke():
+    response = requests.get('https://official-joke-api.appspot.com/random_joke')
+    if response.status_code == 200:
+        data = response.json()
+        setup = data.get('setup')
+        punchline = data.get('punchline')
+    else:
+        setup = "Не удалось получить шутку"
+        punchline = ""
+    return render_template('joke.html', setup=setup, punchline=punchline)
+
 
 @bp.route('/dashboard')
 @login_required

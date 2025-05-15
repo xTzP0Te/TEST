@@ -2,6 +2,9 @@
 {% block content %}
   <h2>Your Tasks</h2>
   <a href="{{ url_for('tasks.new_task') }}" class="btn btn-success mb-3">New Task</a>
+
+  <a href="{{ url_for('tasks.joke') }}" class="btn btn-primary mb-3">Пошутить</a>  <!-- Вот эта строка -->
+
   {% if tasks %}
     <table class="table">
       <thead><tr><th>Title</th><th>Date</th><th>Completed</th><th>Action</th></tr></thead>
